@@ -1,0 +1,20 @@
+<ion-view view-title="Weather">
+  <ion-content class="padding title">
+
+  <div>
+    <h2>Current Temperature & Humidity</h2>
+  </div>
+
+    <h5>Temperature</h5><h3>{{tmp.Temperatura}} °C</h3>
+    <h5>Humidity</h5><h3>{{tmp.Humedad}} %</h3>
+    <h5>Gauge</h5>
+    <div>
+        <div zingchart id="chartHistorial" zc-json="historial" zc-height="80%" zc-width="100%"></div>
+      </div>
+    </div>
+    <p>
+      <a href="https://weather.com/" target="_blank" rel="noopener">Extended Weather</a>
+    </p>
+    <p>{{ CurrentDate | date:'dd/MM/yyyy'}}</p>
+  </ion-content>
+</ion-view>

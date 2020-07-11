@@ -1,0 +1,6 @@
+{
+  "name": "SOA App",
+  "short_name": "SOApp",
+  "start_url": "index.html",
+  "display": "standalone"
+}
