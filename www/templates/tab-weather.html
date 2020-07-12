@@ -5,16 +5,16 @@
     <h2>Current Temperature & Humidity</h2>
   </div>
 
-    <h5>Temperature</h5><h3>{{tmp.Temperatura}} °C</h3>
-    <h5>Humidity</h5><h3>{{tmp.Humedad}} %</h3>
-    <h5>Gauge</h5>
-    <div>
-        <div zingchart id="chartHistorial" zc-json="historial" zc-height="80%" zc-width="100%"></div>
-      </div>
+  <h5>Temperature</h5><h3>{{weatherData.temperature}} °C</h3>
+  <h5>Humidity</h5><h3>{{weatherData.humidity}} %</h3>
+  <h5>Gauge</h5>
+  <div>
+    <div zingchart id="chartWeather" zc-json="chartWeather" zc-height="80%" zc-width="100%">
     </div>
-    <p>
-      <a href="https://weather.com/" target="_blank" rel="noopener">Extended Weather</a>
-    </p>
-    <p>{{ CurrentDate | date:'dd/MM/yyyy'}}</p>
+  </div>
+  <p>
+    <a href="https://weather.com/" target="_blank" rel="noopener">Extended Weather</a>
+  </p>
+  <p>{{ CurrentDate | date:'dd/MM/yyyy'}}</p>
   </ion-content>
 </ion-view>

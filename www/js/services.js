@@ -2,7 +2,7 @@ angular.module('starter.services', ['angularPaho'])
   //Login
   .factory('User', function ($http) {
 
-    var loggedIn = true;
+    var loggedIn = false;
     console.log('LLEGA A SERVICE.js!!')
     return {
       auth: function (credentials) {
@@ -12,9 +12,9 @@ angular.module('starter.services', ['angularPaho'])
         };
 
         loggedIn = true;
-        console.log('Data in serveices.js:' + data);
+        console.log('Data in serveices.js:' + data.toString());
         // CSE server
-        return $http.post('http://192.168.0.178:8093/cse/v1/user/login', data);
+        return $http.post('http://localhost:8093/cse/v1/user/login', data);
       },
 
       isLoggedIn: function () {
@@ -26,7 +26,7 @@ angular.module('starter.services', ['angularPaho'])
 
  // Singleton
   .factory('ClienteSingleton', function (MqttClient) {
-    var ip = '192.168.0.178'; //IP de MQTT (Docker en Notebook)
+    var ip = 'localhost'; //IP de MQTT (Docker en Notebook)
     var port = '9001';  //Mosquitto con Websockets
     var id = "";
     MqttClient.init(ip, port, id);

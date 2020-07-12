@@ -1,12 +1,12 @@
 <ion-view view-title="Distance measured">
   <ion-content>
     <h4 class="title">Observed</h4>
-    <h2 class="title">0.2 m</h2>
-    <p>{{ CurrentDate | date:'HH:mm'}} hs</p>
-    <div class="item range">
-      <i class="ion-eye"> 0 cm</i>
-      <input type="range" name="distance" min="0" max="200" value="33">
-      <i class="ion-eye-disabled"> + 200 cm</i>
+    <h2 class="title">{{rangeData.distance}} m</h2>
+    <p>{{rangeData.timestamp}} hs</p>
+    <h5>Gauge</h5>
+    <div>
+      <div zingchart id="chartRange" zc-json="chartRange" zc-height="80%" zc-width="100%">
+      </div>
     </div>
   </ion-content>
 </ion-view>

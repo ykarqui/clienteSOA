@@ -9,6 +9,8 @@
         <button class="button button-outline button-balanced ion-ios-lightbulb-outline" ion-button ng-click="ledOn()"> Turn on</button>
         <button class="button button-outline button-dark ion-ios-lightbulb" ion-button ng-click="ledOff()"> Turn off</button>
       </div>
+      <div class="col"><button class="button icon ion-ios-lightbulb" ng-if="ledState == true"> Prendido</button>
+        <button class="button icon ion-ios-lightbulb-outline" ng-if="ledState == false"> Apagado</button></div>
     </div>
   </ion-content>
 </ion-view>

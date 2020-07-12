@@ -4,123 +4,34 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
 .controller('WeatherCtrl', function($scope, $http, $state, MqttClient) {   /**/
   $scope.CurrentDate = new Date();
   MqttClient.subscribe("/home/weather");
-  $http.get('http://192.168.0.178:8093/cse/v1/user/weather')
-  .then(function(response) {
-
-      $scope.weatherData = response.data;
-      $scope.tmp = angular.fromJson($scope.weatherData);
-
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-  });
-
-
-  /* async function getMessage() {
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  async function getMessage() {
     var times = [];
     var temps = [];
     var hums = [];
 
-    $scope.historial = {
-      backgroundColor: "#434343",
-      backgroundColor: "#434343",
-      globals: {
-        shadow: false,
-        fontFamily: "Helvetica"
-      },
-      type: 'line',
-      legend: {
-        layout: "x4",
-        backgroundColor: "transparent",
-        borderColor: "transparent",
-        marker: {
-          borderRadius: "50px",
-          borderColor: "transparent"
-        },
-        item: {
-          fontColor: "white"
-        }
-      },
-      scaleX: {
-        maxItems: 8,
-        transform: {
-          type: 'date'
-        },
-        zooming: false,
-        values: times,
-        lineColor: "white",
-        lineWidth: "1px",
-        tick: {
-          lineColor: "white",
-          lineWidth: "1px"
-        },
-        item: {
-          fontColor: "white"
-        },
-        guide: {
-          visible: false
-        }
-      },
-      scaleY: {
-        lineColor: "white",
-        lineWidth: "1px",
-        tick: {
-          lineColor: "white",
-          lineWidth: "1px"
-        },
-        guide: {
-          lineStyle: "solid",
-          lineColor: "#626262"
-        },
-        item: {
-          fontColor: "white"
-        }
-      },
-      tooltip: {
-        visible: false
-      },
-      crosshairX: {
-        scaleLabel: {
-          backgroundColor: "#fff",
-          fontColor: "black"
-        },
-        plotLabel: {
-          backgroundColor: "#434343",
-          fontColor: "#FFF",
-          _text: "Number of hits : %v"
-        }
-      },
-      plot: {
-        lineWidth: "2px",
-        aspect: "spline",
-        marker: {
-          visible: false
-        }
-      },
-      series: [
-        { values: hums,
-          text: 'Humedad'},
-        { values: temps,
-          text: 'Temperatura'}
-      ]
-    };
     var lastTimestamp = "";
-
+    console.log("Entra getMessage de waether");
     while (true) {
       await sleep(2000);   // Sleep in loop
       if (MqttClient.message.payloadString.length > 0 && MqttClient.message.destinationName == "/home/weather") {
         let messageJson = JSON.parse(MqttClient.message.payloadString);
+        console.log(`LLEGA AL CONTROLLER WEATHER EL DATO : ${messageJson}`)
         if (messageJson.timestamp != lastTimestamp){
           $scope.$apply(function () {
             var ts = new Date(messageJson.timestamp)
-            $scope.datosDhT = {
+            $scope.weatherData = {
               timestamp: ts.toLocaleString(),
-              temperatura: parseInt(messageJson.temperatura),
-              humedad: parseInt(messageJson.humedad)
+              temperature: parseInt(messageJson.temperature),
+              humidity: parseInt(messageJson.humedity)
             }
+            console.log(`Temperature: ${temperature}`);
+            console.log(`Humidity: ${humedity}`);
             times.push(messageJson.timestamp);
-            temps.push(parseInt(messageJson.temperatura));
-            hums.push(parseInt(messageJson.humedad));
+            temps.push(parseInt(messageJson.temperature));
+            hums.push(parseInt(messageJson.humidity));
 
           })
         }
@@ -129,23 +40,46 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
     }
   }
 
+  console.log("Entra al controller weather");
+  getMessage();
 
-  getMessage(); */
 })
 
-.controller('RangeCtrl', function($scope) {
+.controller('RangeCtrl', function($scope, MqttClient) {
   $scope.CurrentDate = new Date();
   MqttClient.subscribe("/home/range");
-  $http.get('http://192.168.0.178:8093/cse/v1/user/range')
-  .then(function(response) {
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  async function getMessage() {
+    // var times = [];
+    var distance = [];
 
-      $scope.rangeData = response.data;
-      $scope.tmp = angular.fromJson($scope.rangeData);
-
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
+    var lastTimestamp = "";
+    console.log("Entra getMessage de range");
+    while (true) {
+      await sleep(2000);   // Sleep in loop
+      if (MqttClient.message.destinationName == "/home/range") {
+        let messageJson = JSON.parse(MqttClient.message.payloadString);
+        console.log(`LLEGA AL CONTROLLER RANGE EL DATO : ${messageJson}`)
+        if (messageJson.timestamp != lastTimestamp){
+          $scope.$apply(function () {
+            //var ts = new Date(messageJson.timestamp)
+            $scope.rangeData = {
+              //timestamp: ts.toLocaleString(),
+              distance: parseInt(messageJson)
+            }
+            //times.push(messageJson.timestamp);
+            distance.push(parseInt(messageJson));
+          })
+        }
+        lastTimestamp = messageJson.timestamp;
+      }
     }
-  });
+  }
+
+  console.log("Entra al controller range");
+  getMessage();
 })
 
 .controller('LightingCtrl', function($scope, MqttClient) {
@@ -161,35 +95,29 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
     message.destinationName = "/home/lighting/off";
     MqttClient.send(message);
   }
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function getMessage() {
+    // Sleep in loop
+    while (true) {
+      await sleep(2000);
+      if (MqttClient.message.destinationName == "led/1/state") {
+        let messageJson = JSON.parse(MqttClient.message.payloadString);
+        $scope.$apply(function () {
+          $scope.ledState = messageJson;
+        })
+      }
+    }
+  }
+
+  getMessage();
 })
-
-/* .controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
-})
-
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
-
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
-});
- */
 
 .controller('AuthCtrl', function ($rootScope, $scope, $state, $ionicHistory, User, $ionicPopup, ClienteSingleton) {
+  console.log(`LLega al inicio del controller authctrl!`);
   $scope.credentials = {
     user: '',
     password: ''
@@ -199,8 +127,9 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
     User.auth($scope.credentials).then(
       function (respuesta) {
         $ionicHistory.nextViewOptions({ historyRoot: true });
+        console.log(`Llega al controller de aythctrl`);
         $state.go('tab.weather');
-        var cliente = ClienteSingleton;
+        //var cliente = ClienteSingleton;
       },
       function (err) {
         console.log("error" + err);
