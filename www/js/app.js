@@ -13,8 +13,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services']) 
 
     $rootScope.$on('$stateChangeStart', function (event, toState) {
       if (!User.isLoggedIn() && toState.name !== 'auth') {         //Si no estamos logeados vamos al estado login.
-        event.preventDefault();                                     //El estado login nos controla todo acerca del acceso
-        $state.go('auth');
+        if (toState.name !== 'register') {
+          event.preventDefault();
+          $state.go('auth');
+        }
       }
     });
 
@@ -50,9 +52,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services']) 
     templateUrl: 'templates/auth.html',
     controller: 'AuthCtrl'
   })
+  
+  // register user
+  .state('register', {
+    url: '/register',
+    templateUrl: 'templates/register.html',
+    controller: 'RegisterCtrl'
+  })
 
+  // .state('goLogin', {
+  //   url: '/',
+  //   templateUrl: 'templates/register.html',
+  //   controller: 'registerCtrl'
+  // })
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html'
@@ -84,6 +98,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services']) 
       'tab-lighting': {
         templateUrl: 'templates/tab-lighting.html',
         controller: 'LightingCtrl'
+      }
+    }
+  })
+
+  .state('tab.token', {
+    url: '/token',
+    views: {
+      'tab-token': {
+        templateUrl: 'templates/tab-token.html',
+        controller: 'tokenCtrl'
       }
     }
   })

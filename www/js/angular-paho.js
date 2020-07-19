@@ -91,8 +91,8 @@
     }
 
     function onMessageArrived(message) {
-      console.log("Topico: " + message.destinationName);
-      console.log("Mensaje recibido:: " + message.payloadString);
+      //console.log("Topico: " + message.destinationName);
+      //console.log("Mensaje recibido:: " + message.payloadString);
       client.message = message;
     }
 

@@ -24,6 +24,24 @@ angular.module('starter.services', ['angularPaho'])
     };
   })
 
+  //Register
+  .factory('UserRegister', function ($http) {
+
+    return {
+      registerService: function (payload) {
+        let newUser = {
+          'username': payload.username,
+          'password': payload.password,
+          'firstName': payload.firstName,
+          'lastName': payload.lastName,
+          'email': payload.mail,
+        };
+      // CSE server
+        return $http.post('http://localhost:8093/cse/v1/user', newUser);
+      },
+    };
+  })
+
  // Singleton
   .factory('ClienteSingleton', function (MqttClient) {
     var ip = 'localhost'; //IP de MQTT (Docker en Notebook)

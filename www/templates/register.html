@@ -1,0 +1,37 @@
+<ion-view view-title="Register">
+    <ion-content>
+        <ion-toolbar color="primary">
+            <h3 class="title">Managing</h3>
+        </ion-toolbar>
+        <div style="text-align:center;" mobiscroll-form="settings">
+            <div style="text-align:center;" class="mbsc-form-group">
+                <form ng-submit="registerUser()">
+                    <div style="text-align:center;" class="mbsc-form-group-title">User Data</div>
+                    <label style="text-align:center;" for="firstname">
+                        First Name
+                        <input style="background-color: gainsboro; text-align:center;" mbsc-input ng-model="nu.firstName" type="text" placeholder="First Name" />
+                    </label>
+                    <label for="lastname">
+                        Last Name
+                        <input style="background-color: gainsboro; text-align:center;" mbsc-input ng-model="nu.lastName" type="text" placeholder="Last Name" />
+                    </label>
+                    <label for="username">
+                        User Name
+                        <input style="background-color: gainsboro; text-align:center;" mbsc-input ng-model="nu.username" type="text" placeholder="User Name" />
+                    </label>
+                    <label for="email">
+                        Email
+                        <input style="background-color: gainsboro; text-align:center;" mbsc-input ng-model="nu.mail" type="text" placeholder="Email Address" />
+                    </label>
+                    <label for="password">
+                        Password
+                        <input style="background-color: gainsboro; text-align:center;" mbsc-input ng-model="nu.password" type="password" placeholder="*****" />
+                    </label>
+                    <label class="item">
+                        <button class="button button-large button-balanced" type="submit">Register!</button>
+                    </label>
+                </form>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
