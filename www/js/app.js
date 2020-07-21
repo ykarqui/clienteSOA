@@ -107,7 +107,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services']) 
     views: {
       'tab-token': {
         templateUrl: 'templates/tab-token.html',
-        controller: 'tokenCtrl'
+        controller: 'TokenCtrl'
       }
     }
   })

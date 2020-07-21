@@ -1,7 +1,6 @@
-angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, 'zingchart-angularjs'*/
-//
+angular.module('starter.controllers', ['starter.services', 'angularPaho', 'chart.js']) 
 
-.controller('WeatherCtrl', function($scope, $timeout, $http, $state, MqttClient) {   /**/
+.controller('WeatherCtrl', function($scope, $timeout, $http, $state, MqttClient) {
   $scope.CurrentDate = new Date();
   MqttClient.subscribe("/home/weather");
   function sleep(ms) {
@@ -13,12 +12,10 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
     var hums = [];
 
     var lastTimestamp = "";
-    console.log("Entra getMessage de waether");
     while (true) {
       await sleep(2000);   // Sleep in loop
       if (MqttClient.message.payloadString.length > 0 && MqttClient.message.destinationName == "/home/weather") {
         let messageJson = JSON.parse(MqttClient.message.payloadString);
-        console.log(`LLEGA AL CONTROLLER WEATHER EL DATO : ${messageJson.timestamp}`)
         if (messageJson.timestamp != lastTimestamp){
           $scope.$apply(function () {
             var ts = new Date(messageJson.timestamp)
@@ -27,8 +24,6 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
               temperature: parseInt(messageJson.temperature),
               humidity: parseInt(messageJson.humidity)
             }
-            console.log(`Temperature: ${$scope.weatherData.temperature}`);
-            console.log(`Humidity: ${$scope.weatherData.humidity}`);
           })
         }
         lastTimestamp = messageJson.timestamp;
@@ -47,49 +42,93 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-  async function getMessage() {
-    // var times = [];
-    var distance = [];
 
-    var lastTimestamp = "";
+  // Chart
+  $scope.time = [0];
+  // ["0s", "5s", "10s", "15s", "20s", "25s", "30s"];
+  $scope.data = [0];
+  //  [20, 25, 18, 19, 16, 15, 12]
+  $scope.onClick = function (points, evt) {
+    console.log(points, evt);
+  };
+  $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }];
+  $scope.options = {
+    scales: {
+      yAxes: [
+        {
+          id: 'y-axis-1',
+          type: 'linear',
+          display: true,
+          position: 'left'
+        }
+      ]
+    }
+  };
+
+  async function getMessage() {
+
     console.log("Entra getMessage de range");
+    let lastTimestamp = '';
     while (true) {
       await sleep(2000);   // Sleep in loop
       if (MqttClient.message.destinationName == "/home/range") {
         let messageJson = JSON.parse(MqttClient.message.payloadString);
-        console.log(`LLEGA AL CONTROLLER RANGE EL DATO : ${messageJson.timestamp}`)
         if (messageJson.timestamp != lastTimestamp){
           $scope.$apply(function () {
-            //var ts = new Date(messageJson.timestamp)
             $scope.rangeData = {
-              //timestamp: ts.toLocaleString(),
               distance: parseInt(messageJson.range)
             }
-            //times.push(messageJson.timestamp);
-            console.log(`Range: ${$scope.rangeData.distance}`);
           })
         }
+        
+        $scope.time.push(messageJson.timestamp);
+        $scope.data.push($scope.rangeData.distance);
         lastTimestamp = messageJson.timestamp;
+        console.log(`Time chart : ${$scope.time}`);
+        console.log(`Data received: ${$scope.data}`)
       }
     }
   }
-
-  console.log("Entra al controller range");
   getMessage();
+  
 })
 
-.controller('LightingCtrl', function($scope, MqttClient) {
+.controller('LightingCtrl', function($scope, $rootScope, MqttClient, TokenService, $ionicPopup) {
    $scope.ledOn = function () {
-    message = new Paho.MQTT.Message("true");
-    message.destinationName = "/home/lighting/on";
-    MqttClient.send(message);
+    TokenService.checkToken($scope.username).then(
+      function (){
+        message = new Paho.MQTT.Message("true");
+        message.destinationName = "/home/lighting/on";
+        MqttClient.send(message);
+      },
+      function (err) {
+        console.log("error" + err.toString());
+        $ionicPopup.alert({
+          title: 'EXPIRED TOKEN',
+          content: 'Unauthorized to realize this action, you must generate a new valid token!'
+        });
+      }
+    );
   }
-
-
+  $scope.username = {
+    username: $rootScope.credentials.user,
+  };
+  
   $scope.ledOff = function () {
-    message = new Paho.MQTT.Message("false");
-    message.destinationName = "/home/lighting/off";
-    MqttClient.send(message);
+    TokenService.checkToken($scope.username).then(
+      function (){
+        message = new Paho.MQTT.Message("false");
+        message.destinationName = "/home/lighting/off";
+        MqttClient.send(message);
+      },
+      function (err) {
+        console.log("error" + err.toString());
+        $ionicPopup.alert({
+          title: 'EXPIRED TOKEN',
+          content: 'Unauthorized to realize this action, you must generate a new valid token!'
+        });
+      }
+    );
   }
 
   function sleep(ms) {
@@ -114,19 +153,16 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
 
 .controller('AuthCtrl', function ($rootScope, $scope, $state, $ionicHistory, User, $ionicPopup, ClienteSingleton) {
   console.log(`LLega al inicio del controller authctrl!`);
-  $scope.credentials = {
+  $rootScope.credentials = {
     user: '',
     password: ''
   };
 
-  $scope.auth = function () {
+  $rootScope.auth = function () {
     console.log("Entrando a la funcion auth()")
-    User.auth($scope.credentials).then(
+    User.auth($rootScope.credentials).then(
       function (respuesta) {
-        $ionicHistory.nextViewOptions({ historyRoot: true });
-        console.log(`Paso authctrl`);
         $state.go('tab.weather');
-        console.log(`Paso weather`);
       },
       function (err) {
         console.log("error" + err);
@@ -139,9 +175,7 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
   }
 
   $scope.register = function (UserRegister) {
-    console.log("Entrando a la funcion register()")
     $state.go('register');
-    console.log("Pasando a la funcion register()")
   },
   function (err) {
     console.log("error" + err);
@@ -153,7 +187,6 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
 })
 
 .controller('RegisterCtrl', function ($scope, $state, $ionicPopup, UserRegister) {
-  console.log("Entrando al controller Register")
   $scope.nu = {
     username: '',
     password: '',
@@ -163,15 +196,9 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
   };
 
   $scope.registerUser = function () {
-    console.log(`username ${$scope.nu.username}`);
-    console.log(`password ${$scope.nu.password}`);
-    console.log(`firstName ${$scope.nu.firstName}`);
-    console.log(`lastName ${$scope.nu.lastName}`);
-    console.log(`mail ${$scope.nu.mail}`);
 
     UserRegister.registerService($scope.nu).then(
       function (respuesta) {
-        // $ionicHistory.nextViewOptions({ historyRoot: true });
         $state.go('auth');
       },
       function (err) {
@@ -179,6 +206,51 @@ angular.module('starter.controllers', ['starter.services', 'angularPaho']) /*, '
         $ionicPopup.alert({
           title: 'NOT FOUND',
           content: 'Cant redirect to Login page.'
+        })
+      }
+    );
+  }
+})
+
+.controller('TokenCtrl', function ($scope, $rootScope, $state, $ionicPopup, TokenService) {
+  console.log("Entrando al controller Token")
+  $scope.username = {
+    username: $rootScope.credentials.user,
+  };
+  // check token valid
+  function isValid() {
+    TokenService.checkToken($scope.username).then(
+      function (respuesta) {
+        $ionicPopup.alert({
+          title: 'VALID TOKEN',
+          content: 'You are authorized to manage actuators'
+        })
+      },
+      function (err) {
+        console.log("error" + err.toString());
+        $ionicPopup.alert({
+          title: 'EXPIRED TOKEN',
+          content: 'You need to generate a new token!'
+        })
+      }
+    );
+  }
+  isValid();
+
+  // generate new token by button
+  $scope.generateNewToken = function () {
+    TokenService.generateToken($scope.username).then(
+      function (respuesta) {
+        $ionicPopup.alert({
+          title: 'NEW TOKEN GENERATED',
+          content: 'You have been  authorized to manage actuators now!'
+        })
+      },
+      function (err) {
+        console.log("error" + err.toString());
+        $ionicPopup.alert({
+          title: 'NOT FOUND',
+          content: 'Cant generate a new token.'
         })
       }
     );

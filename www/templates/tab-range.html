@@ -3,10 +3,11 @@
     <h4 class="title">Observed</h4>
     <h2 class="title">{{rangeData.distance}} cm</h2>
     <p style="text-align:center;">{{rangeData.timestamp}} hs</p>
-    <h5 style="text-align:center;">Gauge</h5>
-    <div>
-      <div zingchart id="chartRange" zc-json="chartRange" zc-height="80%" zc-width="100%">
-      </div>
+    <div class="item item-text-wrap">
+      <h5 style="text-align:center;">Chart</h5>
+      <canvas id="line" class="chart chart-line" chart-data="data"
+        chart-labels="time" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick">
+      </canvas>
     </div>
   </ion-content>
 </ion-view>

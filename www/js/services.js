@@ -42,6 +42,23 @@ angular.module('starter.services', ['angularPaho'])
     };
   })
 
+  //Token
+  .factory('TokenService', function ($http) {
+
+    return {
+      generateToken: function (payload) {
+        let username = payload.username
+        console.log(`body: ${JSON.stringify(username)}`);
+      // CSE server
+        return $http.get('http://localhost:8093/cse/v1/user/gentoken?username=' + username);
+      },
+      checkToken: function(payload) {
+        let username = payload.username
+        return $http.get('http://localhost:8093/cse/v1/user/token?username=' + username);
+      }
+    };
+  })
+
  // Singleton
   .factory('ClienteSingleton', function (MqttClient) {
     var ip = 'localhost'; //IP de MQTT (Docker en Notebook)
@@ -56,3 +73,4 @@ angular.module('starter.services', ['angularPaho'])
       }
     };
   })
+  
