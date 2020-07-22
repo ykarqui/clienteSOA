@@ -1,4 +1,6 @@
-angular.module('starter.services', ['angularPaho'])
+angular
+  .module('starter.services', ['angularPaho'])
+  
   //Login
   .factory('User', function ($http) {
 

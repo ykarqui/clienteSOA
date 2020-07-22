@@ -7,10 +7,11 @@
 
   <h5>Temperature</h5><h3>{{weatherData.temperature}} °C</h3>
   <h5>Humidity</h5><h3>{{weatherData.humidity}} %</h3>
-  <h5>Gauge</h5>
-  <div>
-    <div zingchart id="chartWeather" zc-json="chartWeather" zc-height="80%" zc-width="100%">
-    </div>
+  <div class="item item-text-wrap">
+    <h5 style="text-align:center;">Chart</h5>
+    <canvas id="line" class="chart chart-line" chart-data="data"
+      chart-labels="time" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick">
+    </canvas>
   </div>
   <p>
     <a href="https://weather.com/" target="_blank" rel="noopener">Extended Weather</a>

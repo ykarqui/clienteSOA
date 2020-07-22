@@ -5,11 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services']) /*, 'angularPaho'*/
+angular.module('starter', ['ionic', 'starter.controllers', 'weather.controllers', 'token.controllers', 'register.controllers', 
+  'starter.services', 'range.controllers', 'lighting.controllers', 'auth.controllers'])
 
-.run(function($ionicPlatform, $rootScope, $state, User) { // , MqttClient
-
-  /*$rootScope.message = MqttClient.message;*/
+.run(function($ionicPlatform, $rootScope, $state, User) { 
 
     $rootScope.$on('$stateChangeStart', function (event, toState) {
       if (!User.isLoggedIn() && toState.name !== 'auth') {         //Si no estamos logeados vamos al estado login.
@@ -60,12 +59,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services']) 
     controller: 'RegisterCtrl'
   })
 
-  // .state('goLogin', {
-  //   url: '/',
-  //   templateUrl: 'templates/register.html',
-  //   controller: 'registerCtrl'
-  // })
-  // setup an abstract state for the tabs directive
   .state('tab', {
     url: '/tab',
     abstract: true,
