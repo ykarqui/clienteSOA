@@ -6,3 +6,30 @@
 i.maximize.ion-loading-c {
   font-size: 50px;
 }
+
+.popup-buttons .button
+{
+  background-color: slateblue;
+  font-size: 20px;
+}
+
+.button {
+  text-align: center;
+  margin-right: 10px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+}
+
+.right {
+  text-align: right;
+}
+
+.purple {
+  background-color: slateblue;
+  font-size: 20px;
+}

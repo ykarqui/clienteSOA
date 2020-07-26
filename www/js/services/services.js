@@ -60,19 +60,4 @@ angular
       }
     };
   })
-
- // Singleton
-  .factory('ClienteSingleton', function (MqttClient) {
-    var ip = 'localhost'; //IP de MQTT (Docker en Notebook)
-    var port = '9001';  //Mosquitto con Websockets
-    var id = "";
-    MqttClient.init(ip, port, id);
-    var message = MqttClient.message;
-    return {
-      getMessage: function () {
-        message = MqttClient.message;
-        return message;
-      }
-    };
-  })
   

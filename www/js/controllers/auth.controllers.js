@@ -1,6 +1,6 @@
 angular
   .module('auth.controllers', ['starter.services', 'angularPaho', 'chart.js'])
-  .controller('AuthCtrl', function ($rootScope, $scope, $state, $ionicHistory, User, $ionicPopup, ClienteSingleton) {
+  .controller('AuthCtrl', function ($rootScope, $scope, $state, $ionicHistory, User, $ionicPopup) {
     $rootScope.credentials = {
       user: '',
       password: ''
@@ -31,4 +31,4 @@ angular
         content: 'Page not found.'
       })
     }
-  });vpn.tarjetanaranja.com.ar
+  });
