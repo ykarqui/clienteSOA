@@ -16,7 +16,7 @@ angular
         loggedIn = true;
         console.log('Data in serveices.js:' + data.toString());
         // CSE server
-        return $http.post('http://localhost:8093/cse/v1/user/login', data);
+        return $http.post('http://172.17.0.1:8093/cse/v1/user/login', data);
       },
 
       isLoggedIn: function () {
@@ -39,7 +39,7 @@ angular
           'email': payload.mail,
         };
       // CSE server
-        return $http.post('http://localhost:8093/cse/v1/user', newUser);
+        return $http.post('http://172.17.0.1:8093/cse/v1/user', newUser);
       },
     };
   })
@@ -52,11 +52,25 @@ angular
         let username = payload.username
         console.log(`body: ${JSON.stringify(username)}`);
       // CSE server
-        return $http.get('http://localhost:8093/cse/v1/user/gentoken?username=' + username);
+        return $http.get('http://172.17.0.1:8093/cse/v1/user/gentoken?username=' + username);
       },
       checkToken: function(payload) {
         let username = payload.username
-        return $http.get('http://localhost:8093/cse/v1/user/token?username=' + username);
+        return $http.get('http://172.17.0.1:8093/cse/v1/user/token?username=' + username);
+      }
+    };
+  })
+
+  .factory('InitializePaho', function (MqttClient){
+    const ip = '192.168.100.19'; //IP de MQTT (Docker en Notebook)
+    const port = '9001';  //Mosquitto con Websockets
+    const id = "";
+    MqttClient.init(ip, port, id);
+    let message = MqttClient.message;
+    return {
+      getMessage: function () {
+        message = MqttClient.message;
+        return message;
       }
     };
   })

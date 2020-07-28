@@ -1,6 +1,6 @@
 angular
   .module('auth.controllers', ['starter.services', 'angularPaho', 'chart.js'])
-  .controller('AuthCtrl', function ($rootScope, $scope, $state, $ionicHistory, User, $ionicPopup) {
+  .controller('AuthCtrl', function ($rootScope, $scope, $state, User, $ionicPopup, InitializePaho) {
     $rootScope.credentials = {
       user: '',
       password: ''
@@ -10,6 +10,7 @@ angular
       User.auth($rootScope.credentials).then(
         function (respuesta) {
           $state.go('tab.weather');
+          const user = InitializePaho;
         },
         function (err) {
           console.log("error" + err);
