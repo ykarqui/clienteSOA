@@ -16,7 +16,7 @@ angular
         loggedIn = true;
         console.log('Data in serveices.js:' + data.toString());
         // CSE server
-        return $http.post('http://172.17.0.1:8093/cse/v1/user/login', data);
+        return $http.post('http://192.168.100.19:8093/cse/v1/user/login', data);
       },
 
       isLoggedIn: function () {
@@ -39,7 +39,7 @@ angular
           'email': payload.mail,
         };
       // CSE server
-        return $http.post('http://172.17.0.1:8093/cse/v1/user', newUser);
+        return $http.post('http://192.168.100.19:8093/cse/v1/user', newUser);
       },
     };
   })
@@ -52,11 +52,11 @@ angular
         let username = payload.username
         console.log(`body: ${JSON.stringify(username)}`);
       // CSE server
-        return $http.get('http://172.17.0.1:8093/cse/v1/user/gentoken?username=' + username);
+        return $http.get('http://192.168.100.19:8093/cse/v1/user/gentoken?username=' + username);
       },
       checkToken: function(payload) {
         let username = payload.username
-        return $http.get('http://172.17.0.1:8093/cse/v1/user/token?username=' + username);
+        return $http.get('http://192.168.100.19:8093/cse/v1/user/token?username=' + username);
       }
     };
   })
