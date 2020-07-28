@@ -1,5 +1,6 @@
-angular.module('lighting.controllers', ['starter.services', 'angularPaho', 'chart.js'])
-.controller('LightingCtrl', function($scope, $rootScope, MqttClient, TokenService, $ionicPopup) {
+angular
+  .module('lighting.controllers', ['starter.services', 'angularPaho', 'chart.js'])
+  .controller('LightingCtrl', function($scope, $rootScope, MqttClient, TokenService, $ionicPopup) {
     $scope.ledOn = function () {
      TokenService.checkToken($scope.username).then(
        function (){

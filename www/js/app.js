@@ -6,7 +6,7 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'weather.controllers', 'token.controllers', 'register.controllers', 
-  'starter.services', 'range.controllers', 'lighting.controllers', 'auth.controllers'])
+  'starter.services', 'range.controllers', 'lighting.controllers', 'auth.controllers', 'rangehistoric.controllers', 'weatherhistoric.controllers'])
 
 .run(function($ionicPlatform, $rootScope, $state, User) { 
 
@@ -57,6 +57,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'weather.controllers'
     url: '/register',
     templateUrl: 'templates/register.html',
     controller: 'RegisterCtrl'
+  })
+  // range historic
+  .state('rangeHistoric', {
+    url: '/rangeHistoric',
+    templateUrl: 'templates/rangeHistoric.html',
+    controller: 'RangeHistoricCtrl'
+  })
+  // weather historic
+  .state('weatherHistoric', {
+    url: '/weatherHistoric',
+    templateUrl: 'templates/weatherHistoric.html',
+    controller: 'WeatherHistoricCtrl'
   })
 
   .state('tab', {

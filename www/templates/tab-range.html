@@ -4,10 +4,12 @@
     <h2 class="title">{{rangeData.distance}} cm</h2>
     <p style="text-align:center;">{{rangeData.timestamp}} hs</p>
     <div class="item item-text-wrap">
-      <h5 style="text-align:center;">Chart</h5>
+      <h5 style="text-align:center;">Chart - current data</h5>
       <canvas id="line" class="chart chart-line" chart-data="data"
         chart-labels="time" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick">
       </canvas>
+      <button class="button button-large button-outline button-royal center" type="button" ng-click="getHistoric()"> View Historic data </button>
     </div>
+    
   </ion-content>
 </ion-view>

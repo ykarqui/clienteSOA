@@ -1,0 +1,30 @@
+<ion-view view-title="Historic Distances">
+  <ion-content>
+    <h4 class="title">Historic range</h4>
+    
+    <div class="item item-text-wrap">
+      <h5 style="text-align:center;">Historic data - http</h5>
+      <br/>
+      <br/>
+      <br/>
+      <div class="center">
+        <button class="button button-large button-outline button-royal" type="button" ng-click="goRange()"> Go back! </button>
+      </div>
+      <br/>
+        <br/>
+        <br/>
+      <div class="list">
+        <label class="item item-input item-stacked-label" style="text-align:center;">
+          <span class="input-label">Distance [cm]</span>
+          <span class="input-label">Date</span> 
+        </label>
+        <label ng-repeat="i in itemsRange" class="item item-input item-stacked-label" style="text-align:center;">
+          <span class="input-label">{{i.distance}}</span>
+          <span class="input-label">{{i.date}}</span>
+        </label>
+      </div>
+      
+    </div>
+
+  </ion-content>
+</ion-view>

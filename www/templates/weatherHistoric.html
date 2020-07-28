@@ -1,0 +1,32 @@
+<ion-view view-title="Historic Weather">
+  <ion-content>
+    <h4 class="title">Historic weather</h4>
+    
+    <div class="item item-text-wrap">
+      <h5 style="text-align:center;">Historic data - http</h5>
+      <br/>
+      <br/>
+      <br/>
+      <div class="center">
+        <button class="button button-large button-outline button-royal" type="button" ng-click="goWeather()"> Go back! </button>
+      </div>
+      <br/>
+        <br/>
+        <br/>
+      <div class="list">
+        <label class="item item-input item-stacked-label" style="text-align:center;">
+          <span class="input-label">Temperature [*C]</span>
+          <span class="input-label">Humidity [%]</span> 
+          <span class="input-label">Date</span> 
+        </label>
+        <label ng-repeat="i in itemsWeather" class="item item-input item-stacked-label" style="text-align:center;">
+          <span class="input-label">{{i.temperature}}</span>
+          <span class="input-label">{{i.humidity}}</span>
+          <span class="input-label">{{i.timestamp}}</span>
+        </label>
+      </div>
+      
+    </div>
+
+  </ion-content>
+</ion-view>

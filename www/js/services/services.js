@@ -5,7 +5,6 @@ angular
   .factory('User', function ($http) {
 
     var loggedIn = false;
-    console.log('LLEGA A SERVICE.js!!')
     return {
       auth: function (credentials) {
         let data = {
@@ -14,7 +13,6 @@ angular
         };
 
         loggedIn = true;
-        console.log('Data in serveices.js:' + data.toString());
         // CSE server
         return $http.post('http://cse.com/user/login', data);
       },
@@ -50,7 +48,6 @@ angular
     return {
       generateToken: function (payload) {
         let username = payload.username
-        console.log(`body: ${JSON.stringify(username)}`);
       // CSE server
         return $http.get('http://cse.com/user/gentoken?username=' + username);
       },
